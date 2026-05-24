@@ -8,6 +8,7 @@
 #include <userver/server/handlers/tests_control.hpp>
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
+#include <userver/storages/postgres/component.hpp>
 
 #include <hello.hpp>
 #include <handlers/health_handler.hpp>
@@ -16,7 +17,16 @@
 #include <handlers/patient_handler.hpp>
 #include <handlers/record_handler.hpp>
 
+#include <repositories/RepositoryFactory.h>
+
+#include <iostream>
+
 int main(int argc, char* argv[]) {
+    std::cout << "========================================" << std::endl;
+    std::cout << "Medical Records API Server (with PostgreSQL)" << std::endl;
+    std::cout << "Architecture: Domain-Driven Design + userver" << std::endl;
+    std::cout << "========================================" << std::endl;
+    
     auto component_list =
         userver::components::MinimalServerComponentList()
             .Append<userver::server::handlers::Ping>()
@@ -25,6 +35,7 @@ int main(int argc, char* argv[]) {
             .Append<userver::clients::dns::Component>()
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
+            .Append<userver::components::Postgres>("postgres-db-1")
             .Append<medical_api::Hello>()
             .Append<medical_api::HealthHandler>()
             .Append<medical_api::RegisterHandler>()

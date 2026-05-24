@@ -6,7 +6,7 @@ include(DownloadUserver)
 
 find_package(
     userver
-    COMPONENTS core
+    COMPONENTS core postgresql
     QUIET
 )
 if(NOT userver_FOUND)
@@ -29,6 +29,9 @@ add_library(
     src/repositories/InMemoryUserRepository.cpp
     src/repositories/InMemoryPatientRepository.cpp
     src/repositories/InMemoryMedicalRecordRepository.cpp
+    src/repositories/PostgresUserRepository.cpp
+    src/repositories/PostgresPatientRepository.cpp
+    src/repositories/PostgresMedicalRecordRepository.cpp
     src/services/PasswordHasher.cpp
     src/services/JWTService.cpp
     src/services/UserService.cpp
@@ -39,6 +42,7 @@ add_library(
 target_link_libraries(
     ${PROJECT_NAME}_objs
     PUBLIC userver::core
+    PUBLIC userver::postgresql
 )
 
 add_executable(${PROJECT_NAME} src/main.cpp)
